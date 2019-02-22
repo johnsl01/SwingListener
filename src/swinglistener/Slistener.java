@@ -16,6 +16,6 @@ public class Slistener
     {
         this.port = port; // pick up port parameter and pass to class variable
         
-  
+    } // Slistener ()
   
 } // class Slistener
