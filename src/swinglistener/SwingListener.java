@@ -172,8 +172,7 @@ public class SwingGet
             {
                 port = Integer.parseInt(portText.getText());
                 println( 0, "Starting Listener on " + port  + NEWLINE ) ;
-                page = getPage(url);
-                println( 0, page + NEWLINE + NEWLINE ) ;
+                startListener(port);
             }
             catch (Exception f)
             {
@@ -181,8 +180,7 @@ public class SwingGet
             }
         }
         else if ( actionCommandText.equals( clearTextButtonText ) )
-        {
-            // println( 3, "Clear Results Button Pressed .... " ) ; // duh ! 
+        { 
             reportArea.setText( "Output (reset) : \n" );
         }
         else 
@@ -191,7 +189,42 @@ public class SwingGet
         }
            
     } // actionPerformed ()
+    
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) 
+    {        
+        // System.out.println("Hello World");  // console diag message 
         
+        EventQueue.invokeLater
+        (
+            () -> 
+            {
+                SwingGet gui = new SwingGet();
+                gui.setVisible(true);
+            }
+        );	       
+    } // main()
+    
+    
+    public static void println ( int level, String message )
+    {		
+        if ( (DEBUG) & (level <= DEBUGLEVEL) )
+        {
+            // Standard Output :		
+            // System.out.println ( message ) ;
+
+            // Text Area Output : 
+            reportArea.append ( NEWLINE + message ) ;
+            // Make sure the newest text is visible
+            reportArea.setCaretPosition(reportArea.getDocument().getLength());
+
+            // update report area after each message is appended
+            reportArea.repaint() ;	
+        }
+    } /* println */       
         
         
         
