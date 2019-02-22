@@ -41,6 +41,8 @@ public class SwingGet
     
     static int port = 8080 ;  // the port on which to listen
     
+    static ArrayList<Thread> listeningThreads;
+    
     // gui components - all within the class's JFrame
     static JLabel portLabel ;    
     static JTextField portText ;
@@ -230,21 +232,30 @@ public class SwingGet
     /**
     *
     * @param port - int : port to listen on 
-    * @throws  Exception - not handled
+    * @throws  Exception - not handled (or is it?) 
     */
     private startListener ( int port)
-                          throws Exception   
+                          throws Exception  
+    // TODO - how does litget code do this ?
+    // there are too many different ways to start threads 
+    // not clear which is correct in which case.
     {
-    
+        try 
+	{
+	
+	Thread lthread = new Thread(new Slistener(port)) ;
+	listeningThreads.add(lthread) ;
+	}
+	catch
+	{
+	    println(0, "Something went wrong starting the listener) ;
+	}
     }
 			  
    
         
         
         
+} //  Class SwingListener       
         
-        
-        
-                      
-
-
+ 
