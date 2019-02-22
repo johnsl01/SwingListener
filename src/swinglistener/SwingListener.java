@@ -180,7 +180,7 @@ public class SwingGet
             }
             catch (Exception f)
             {
-                println( 0, "Oops ... something went wrong tryimg to listen on the port \n" ) ;
+                println( 0, "Oops ... something went wrong trying to listen on the port \n" ) ;
             }
         }
         else if ( actionCommandText.equals( clearTextButtonText ) )
@@ -244,18 +244,16 @@ public class SwingGet
         try 
 	{
 	
-	Thread lthread = new Thread(new Slistener(port)) ;
-	listeningThreads.add(lthread) ;
+	    Thread lthread = new Thread(new Slistener(port)) ;
+	    listeningThreads.add(lthread) ;
 	}
 	catch
 	{
 	    println(0, "Something went wrong starting the listener) ;
 	}
+	
+	// do I need to keep this running (I don't think so) ?
     }
-			  
-   
-        
-        
         
 } //  Class SwingListener       
         
