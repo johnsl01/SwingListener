@@ -242,8 +242,7 @@ public class SwingGet
     // not clear which is correct in which case.
     {
         try 
-	{
-	
+	{	
 	    Thread lthread = new Thread(new Slistener(port)) ;
 	    listeningThreads.add(lthread) ;
 	}
