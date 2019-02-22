@@ -38,6 +38,8 @@ public class SwingGet
     static boolean DEBUG = true ;
     static Integer DEBUGLEVEL = 9 ;  // messages to the text area are filtered by this level
     
+    statis int port = 8080 ;  // the port on which to listen
+    
     // gui components - all within the class's JFrame
     static JLabel portLabel ;    
     static JTextField portText ;
@@ -81,28 +83,114 @@ public class SwingGet
         reportScrollPane = new JScrollPane(reportArea);
 
         // put the gui components into the layout 
-	      // note comments to keep track of numbers - becomes important with complex layouts	
+        // note comments to keep track of numbers - becomes important with complex layouts	
         createLayout (
                       portLabel, // item 0  
                       portText,
                       startButton,
                       clearTextButton,
                       reportScrollPane // item 4
-		                  ) ;
+		      ) ;
                       
         // basic window stuff
         setTitle ( TITLE ) ;
         setLocationRelativeTo ( null ) ;
         setDefaultCloseOperation(EXIT_ON_CLOSE) ;  
         
-       // default port value - 8080 a typical proxy port
-       // ... and a great little cpu back in the day ...
-       portTest.setText ( "8080" ) ;
+        // default port value - 8080 a typical proxy port
+        // ... and a great little cpu back in the day ...
+        portText.setText ( "8080" ) ;
+        
+        // add the listeners to the components which need to trigger actions
+        // note - changing the URL text is not set to trigger anything
+        startButton.addActionListener(this) ;
+        clearTextButton.addActionListener(this) ; 
+    } // initUI()        
+        
+    private void createLayout (JComponent... arg)
+    {
+        Container pane = getContentPane() ;		
+	GroupLayout gl = new GroupLayout ( pane ) ;		
+	pane.setLayout( gl ) ;
+        
+        gl.setAutoCreateContainerGaps(true) ;
+        gl.setAutoCreateGaps(true) ;
+        
+	// this is a really tedious mechanism
+	// the horizontal and vertical groups define the same stuff
+	// but horizontal is parallel then sequential groups
+	// whereas vertical is sequental then parallel groups
+	// it becomes very messy for complex gui layouts
+	// and arguement numbering makes it easy to mess up
+	// there is probably a better way - but this works.
+	// The layout we want here is :
+	//   0    1   :      portLabel       portText
+	//   2    3   :      startButton     cleartextButton
+	//      4     :           reportSrollPane
+        gl.setHorizontalGroup (
+            gl.createParallelGroup() 
+                .addGroup(gl.createSequentialGroup()
+                    .addComponent(arg[0])
+                    .addComponent(arg[1]) 
+                )
+                .addGroup(gl.createSequentialGroup()
+                    .addComponent(arg[2])
+                    .addComponent(arg[3]) 
+                )
+                .addComponent(arg[4]) 
+        ) ;
+        gl.setVerticalGroup (
+            gl.createSequentialGroup() 
+                .addGroup(gl.createParallelGroup()
+                    .addComponent(arg[0])
+                    .addComponent(arg[1]) 
+                )
+                .addGroup(gl.createParallelGroup()
+                    .addComponent(arg[2])
+                    .addComponent(arg[3]) 
+                )
+                .addComponent(arg[4]) 
+        ) ;        
+        gl.linkSize(arg[1])		
+	pack();        
+    }  // createLayout ()    
+    
+    
+    public void actionPerformed ( ActionEvent e )			
+    {
+        String actionCommandText ;
+        actionCommandText = e.getActionCommand() ;
+        
+        println( 3, "In actionPerformed ....." ) ;
+        println( 3, "Action Command Text :>" + actionCommandText + "<") ;
         
         
-        
-        
-        
+        if ( actionCommandText.equals( startButtonText ) )
+	{
+            println( 3, "Start Button Pressed .... " ) ;
+            try 
+            {
+                port = Integer.parseInt(portText.getText());
+                println( 0, "Starting Listener on " + port  + NEWLINE ) ;
+                page = getPage(url);
+                println( 0, page + NEWLINE + NEWLINE ) ;
+            }
+            catch (Exception f)
+            {
+                println( 0, "Oops .. failed to get page \n" ) ;
+            }
+        }
+        else if ( actionCommandText.equals( clearTextButtonText ) )
+        {
+            // println( 3, "Clear Results Button Pressed .... " ) ; // duh ! 
+            reportArea.setText( "Output (reset) : \n" );
+        }
+        else 
+        {
+            println( 0, "unidentified action requested >" + actionCommandText + "<" ) ;
+        }
+           
+    } // actionPerformed ()
         
         
         
