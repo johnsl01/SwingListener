@@ -34,11 +34,12 @@ public class SwingGet
     private static final long serialVersionUID = 1L;
     public static final String TITLE = "Swing Listener (V 1.00 22/02/2019)" ;
     public static final String NEWLINE = "\n";
+    
     // class variables
     static boolean DEBUG = true ;
     static Integer DEBUGLEVEL = 9 ;  // messages to the text area are filtered by this level
     
-    statis int port = 8080 ;  // the port on which to listen
+    static int port = 8080 ;  // the port on which to listen
     
     // gui components - all within the class's JFrame
     static JLabel portLabel ;    
@@ -176,7 +177,7 @@ public class SwingGet
             }
             catch (Exception f)
             {
-                println( 0, "Oops .. failed to get page \n" ) ;
+                println( 0, "Oops ... something went wrong tryimg to listen on the port \n" ) ;
             }
         }
         else if ( actionCommandText.equals( clearTextButtonText ) )
@@ -226,7 +227,10 @@ public class SwingGet
         }
     } /* println */       
         
-        
+    /**
+    *
+    * @param port - int : port to listen on 
+    * @throws  Exception - not handled
         
         
         
