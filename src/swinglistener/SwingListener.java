@@ -176,6 +176,7 @@ public class SwingGet
                 port = Integer.parseInt(portText.getText());
                 println( 0, "Starting Listener on " + port  + NEWLINE ) ;
                 startListener(port);
+		startButton.setVisible(False) // hide the button - there is no Stop ! 
             }
             catch (Exception f)
             {
