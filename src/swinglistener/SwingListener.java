@@ -5,10 +5,12 @@
 *
 * No responses are currently implemented 
 *
-* This is juat a simple diagnostic tool
+* This is just a simple diagnostic tool
 */
 
 package swinglistener;
+
+import java.util.ArrayList;
 
 // AWT imports
 import java.awt.Container;
@@ -25,7 +27,7 @@ import javax.swing.JTextArea ;
 import javax.swing.JScrollPane ;
 import javax.swing.JComponent ;
 
-public class SwingGet 
+public class SwingListener
             extends JFrame   // because it needs to have a Swing GUI interface
             implements ActionListener  // because user gui interaction has to trigger actions
             
@@ -56,14 +58,7 @@ public class SwingGet
     static JScrollPane reportScrollPane ;
 
     // put the gui components into the layout 
-	  // note comments to keep track of numbers - becomes important with complex layouts	
-    createLayout (
-                  portLabel, // item 0  
-                  portText,
-                  startButton,
-                  clearTextButton,
-                  reportScrollPane // item 4
-		              );
+	// note comments to keep track of numbers - becomes important with complex layouts	
                   
     // Class constructor
     public SwingListener()
@@ -79,7 +74,7 @@ public class SwingGet
         startButton = new JButton ( startButtonText ) ;
         clearTextButton = new JButton ( clearTextButtonText ) ;
 	      // JTextArea is within a JScrollPane
-        reportArea = new JTextArea( "Output : \n", 20, 0  ) ;
+        reportArea = new JTextArea( "Output : \n", 20, 60  ) ;
         reportArea.setEditable(false);
         reportArea.setLineWrap(true);
         reportArea.setWrapStyleWord(true);
@@ -122,14 +117,14 @@ public class SwingGet
 	// this is a really tedious mechanism
 	// the horizontal and vertical groups define the same stuff
 	// but horizontal is parallel then sequential groups
-	// whereas vertical is sequental then parallel groups
+	// whereas vertical is sequential then parallel groups
 	// it becomes very messy for complex gui layouts
-	// and arguement numbering makes it easy to mess up
+	// and argument numbering makes it easy to mess up
 	// there is probably a better way - but this works.
 	// The layout we want here is :
-	//   0    1   :      portLabel       portText
-	//   2    3   :      startButton     cleartextButton
-	//      4     :           reportSrollPane
+	//   0     1   :      portLabel       portText
+	//   2     3   :      startButton     cleartextButton
+	//      4      :           reportSrollPane
         gl.setHorizontalGroup (
             gl.createParallelGroup() 
                 .addGroup(gl.createSequentialGroup()
@@ -154,8 +149,8 @@ public class SwingGet
                 )
                 .addComponent(arg[4]) 
         ) ;        
-        gl.linkSize(arg[1])		
-	pack();        
+        gl.linkSize(arg[1])	;	
+	    pack() ;        
     }  // createLayout ()    
     
     
@@ -176,7 +171,7 @@ public class SwingGet
                 port = Integer.parseInt(portText.getText());
                 println( 0, "Starting Listener on " + port  + NEWLINE ) ;
                 startListener(port);
-		startButton.setVisible(False) // hide the button - there is no Stop ! 
+                startButton.setVisible(false) ; // hide the button - there is no Stop ! 
             }
             catch (Exception f)
             {
@@ -206,7 +201,7 @@ public class SwingGet
         (
             () -> 
             {
-                SwingGet gui = new SwingGet();
+                SwingListener gui = new SwingListener();
                 gui.setVisible(true);
             }
         );	       
@@ -235,21 +230,30 @@ public class SwingGet
     * @param port - int : port to listen on 
     * @throws  Exception - not handled (or is it?) 
     */
-    private startListener ( int port)
+    private void startListener ( int port)
                           throws Exception  
-    // TODO - how does litget code do this ?
+    // TODO - how does my litget code do this ?
     // there are too many different ways to start threads 
     // not clear which is correct in which case.
     {
         try 
-	{	
-	    Thread lthread = new Thread(new Slistener(port)) ;
-	    listeningThreads.add(lthread) ;
-	}
-	catch
-	{
-	    println(0, "Something went wrong starting the listener) ;
-	}
+        {	
+        	// Starting the thread  1 : calls the class constuctor
+        	// Thread lthread = new Thread(new Slistener(port)) ;
+        	// listeningThreads.add(lthread) ;
+        	// Then this calls the run() method 
+        	// lthread.start() ;
+        	
+        	
+        	// Starting the thread  2 : calls the class constructor 
+        	Slistener sl = new Slistener(port) ;
+        	// Then this calls the run() method
+        	new Thread(sl).start();		
+        }
+        catch  (Exception e)
+        {
+        	println(0, "Something went wrong starting the listener" ) ;
+        }
 	
 	// do I need to keep this running (I don't think so) ?
     }
