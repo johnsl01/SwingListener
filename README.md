@@ -14,6 +14,6 @@ A listener thread listens to the nominated port and spawns a handler thread for 
 
 The handler threads read the incoming data and send it back to the gui process via an exposed method.
 
-(Please don't assume that any of this implementation is a good way of doing what it is attempting to do - but it does work so it may be a starting point for experementation).
+(Please don't assume that any of this implementation is a good way of doing what it is attempting to do - but it does work so it may be a starting point for experimentation).
 
 johnsl - Feb 2019.
